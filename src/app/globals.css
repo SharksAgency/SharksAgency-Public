@@ -197,6 +197,11 @@ a {
     scroll-behavior: auto;
   }
 
+  [data-manifesto-line] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
   *,
   *::before,
   *::after {
