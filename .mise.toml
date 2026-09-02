@@ -1,3 +1,2 @@
 [tools]
 node = "22"
-"npm:pnpm" = "11.19.0"

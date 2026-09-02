@@ -13,11 +13,11 @@ Arabic-first Next.js website for Sharks Agency.
 
 ## Commands
 
-- `pnpm dev` — development server on port 8443
-- `pnpm build` — production build
-- `pnpm lint` — ESLint
-- `pnpm typecheck` — TypeScript validation
-- `pnpm format` — format source files
+- `npm run dev` — development server on port 8443
+- `npm run build` — production build
+- `npm run lint` — ESLint
+- `npm run typecheck` — TypeScript validation
+- `npm run format` — format source files
 
 ## Conventions
 

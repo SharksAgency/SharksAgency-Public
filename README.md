@@ -20,13 +20,13 @@ The site uses an editorial RTL composition, light and dark themes, smooth scroll
 Requirements:
 
 - Node.js 20.9 or newer (Node.js 22 LTS recommended)
-- pnpm 11
+- npm 10 or newer
 
 Install dependencies and run the development server:
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 The application runs at [http://localhost:8443](http://localhost:8443).
@@ -34,10 +34,10 @@ The application runs at [http://localhost:8443](http://localhost:8443).
 ## Production validation
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm build
-pnpm start
+npm run lint
+npm run typecheck
+npm run build
+npm run start
 ```
 
 ## Environment variables
