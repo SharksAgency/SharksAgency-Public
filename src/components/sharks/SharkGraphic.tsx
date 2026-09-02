@@ -23,6 +23,7 @@ export const SharkGraphic = forwardRef<HTMLDivElement, Props>(
           width="380"
           height="210"
           viewBox="0 0 380 210"
+          className="block h-auto w-[clamp(180px,18vw,300px)] max-w-[70vw]"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden

@@ -63,8 +63,13 @@ export function Hero({ ready }: { ready: boolean }) {
       data-cursor-dim
       className="relative z-10 min-h-[100svh] w-full overflow-hidden bg-canvas"
     >
-      <div className="absolute inset-0 z-20">
-        <SharkGraphic ref={wrapperRef} tailRef={tailRef} bodyRef={bodyRef} />
+      <div className="pointer-events-none absolute inset-0 z-20">
+        <SharkGraphic
+          ref={wrapperRef}
+          tailRef={tailRef}
+          bodyRef={bodyRef}
+          className="absolute left-0 top-0 w-max"
+        />
       </div>
       <div className="relative mx-auto min-h-[100svh] max-w-[1600px] px-6 pt-32 md:px-12">
         <div className="pointer-events-none absolute inset-0 z-10 px-6 md:px-12">
