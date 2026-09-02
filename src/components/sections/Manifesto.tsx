@@ -15,20 +15,15 @@ import { useReducedMotion } from "@/hooks/useReducedMotion"
 
 function Line({
   children,
-  index,
 }: {
   children: ReactNode
-  index: number
 }) {
   return (
     <div className="overflow-hidden">
       <div
         data-manifesto-line
-        data-manifesto-lead={index === 0 ? "true" : undefined}
         className="will-change-transform"
-        // Keep a visible, readable fallback before GSAP boots. The enhanced
-        // sequence moves lines 2–4 below this mask during its setup.
-        style={{ opacity: index === 0 ? 1 : 0.3 }}
+        style={{ opacity: 0.3, transform: "translateY(110%)" }}
       >
         {children}
       </div>
@@ -55,10 +50,9 @@ export function Manifesto() {
 
     gsap.registerPlugin(ScrollTrigger)
     const context = gsap.context(() => {
-      // The first line is the anchor statement. The remaining lines enter one
-      // at a time as the user scrolls through the pinned sequence.
-      gsap.set(lines[0], { clearProps: "transform", opacity: 1 })
-      gsap.set(lines.slice(1), { y: "110%", opacity: 0.3 })
+      // Every line starts below its mask and enters only as the user scrolls
+      // through the pinned sequence.
+      gsap.set(lines, { y: "110%", opacity: 0.3 })
 
       const timeline = gsap.timeline({
         defaults: { ease: "power3.out" },
@@ -74,10 +68,10 @@ export function Manifesto() {
         },
       })
 
-      lines.slice(1).forEach((line, index) => {
+      lines.forEach((line, index) => {
         const mark = line.querySelector<HTMLElement>(".mark")
-        const at = index * 1.05 + 0.45
-        timeline.addLabel(`manifesto-${index + 1}`, at)
+        const at = index * 1.05
+        timeline.addLabel(`manifesto-${index}`, at)
         timeline.to(
           line,
           { y: "0%", opacity: 1, duration: 0.85 },
@@ -110,18 +104,18 @@ export function Manifesto() {
         </div>
 
         <div className="space-y-2 text-[8vw] font-semibold leading-[1.12] tracking-tight text-navy md:space-y-3 md:text-[3.6vw]">
-          <Line index={0}>
+          <Line>
             نحن لا نضيف ضوضاء جديدة إلى السوق.
           </Line>
-          <Line index={1}>
+          <Line>
             <span className="text-navy/40">نفهم ما يحدث،</span>
           </Line>
-          <Line index={2}>
+          <Line>
             <span className="text-navy/40">نحدّد أين تكمن </span>
             <Mark>الفرصة</Mark>
             <span className="text-navy/40">،</span>
           </Line>
-          <Line index={3}>
+          <Line>
             ثم نبني <Mark>الاتجاه</Mark> الذي يستحق أن تتحرك نحوه العلامة.
           </Line>
         </div>
