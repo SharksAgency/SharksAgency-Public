@@ -80,7 +80,7 @@ export function Manifesto() {
         timeline.addLabel(`manifesto-${index + 1}`, at)
         timeline.to(
           line,
-          { yPercent: 0, opacity: 1, duration: 0.85 },
+          { y: "0%", opacity: 1, duration: 0.85 },
           at,
         )
         if (mark) {
