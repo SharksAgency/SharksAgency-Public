@@ -20,7 +20,11 @@ function Line({
 }) {
   return (
     <div className="overflow-hidden">
-      <div data-manifesto-line className="translate-y-[110%] opacity-30">
+      <div
+        data-manifesto-line
+        className="will-change-transform"
+        style={{ opacity: 0.3, transform: "translateY(110%)" }}
+      >
         {children}
       </div>
     </div>
