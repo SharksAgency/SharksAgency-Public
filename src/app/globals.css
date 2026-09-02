@@ -182,6 +182,13 @@ a {
   color: var(--color-azure);
 }
 
+/* The lead statement is always readable while the enhanced scroll sequence
+   initializes; later lines are the only ones that start below their masks. */
+[data-manifesto-lead='true'] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 /* Clip-reveal utility for masked text reveals (no generic fade) */
 .clip-reveal {
   clip-path: inset(0 0 105% 0);

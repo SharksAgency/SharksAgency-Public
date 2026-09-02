@@ -15,15 +15,20 @@ import { useReducedMotion } from "@/hooks/useReducedMotion"
 
 function Line({
   children,
+  index,
 }: {
   children: ReactNode
+  index: number
 }) {
   return (
     <div className="overflow-hidden">
       <div
         data-manifesto-line
+        data-manifesto-lead={index === 0 ? "true" : undefined}
         className="will-change-transform"
-        style={{ opacity: 0.3, transform: "translateY(110%)" }}
+        // Keep a visible, readable fallback before GSAP boots. The enhanced
+        // sequence moves lines 2–4 below this mask during its setup.
+        style={{ opacity: index === 0 ? 1 : 0.3 }}
       >
         {children}
       </div>
@@ -52,8 +57,8 @@ export function Manifesto() {
     const context = gsap.context(() => {
       // The first line is the anchor statement. The remaining lines enter one
       // at a time as the user scrolls through the pinned sequence.
-      gsap.set(lines[0], { yPercent: 0, opacity: 1 })
-      gsap.set(lines.slice(1), { yPercent: 110, opacity: 0.3 })
+      gsap.set(lines[0], { clearProps: "transform", opacity: 1 })
+      gsap.set(lines.slice(1), { y: "110%", opacity: 0.3 })
 
       const timeline = gsap.timeline({
         defaults: { ease: "power3.out" },
@@ -105,18 +110,18 @@ export function Manifesto() {
         </div>
 
         <div className="space-y-2 text-[8vw] font-semibold leading-[1.12] tracking-tight text-navy md:space-y-3 md:text-[3.6vw]">
-          <Line>
+          <Line index={0}>
             نحن لا نضيف ضوضاء جديدة إلى السوق.
           </Line>
-          <Line>
+          <Line index={1}>
             <span className="text-navy/40">نفهم ما يحدث،</span>
           </Line>
-          <Line>
+          <Line index={2}>
             <span className="text-navy/40">نحدّد أين تكمن </span>
             <Mark>الفرصة</Mark>
             <span className="text-navy/40">،</span>
           </Line>
-          <Line>
+          <Line index={3}>
             ثم نبني <Mark>الاتجاه</Mark> الذي يستحق أن تتحرك نحوه العلامة.
           </Line>
         </div>
