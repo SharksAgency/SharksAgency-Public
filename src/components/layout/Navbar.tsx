@@ -4,7 +4,7 @@
  *  a tiny azure fin marker sits under the active item. Route-aware active state
  *  for the real routes (home / blog); section links jump to the homepage. */
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -14,7 +14,13 @@ import { ThemeToggle } from "@/components/navigation/ThemeToggle"
 import { SharkButton } from "@/components/ui/SharkButton"
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState<string | null>(null)
   const pathname = usePathname() ?? ""
+
+  const sectionItems = useMemo(
+    () => navigation.filter((item) => item.sectionId),
+    [],
+  )
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -22,6 +28,47 @@ export function Navbar() {
     onScroll()
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
+  useEffect(() => {
+    // Section highlighting only applies on the home route. Route matches still
+    // drive active state on secondary pages.
+    if (pathname !== "/") {
+      return
+    }
+
+    const sections = sectionItems
+      .map((item) => item.sectionId)
+      .filter((id): id is string => Boolean(id))
+      .map((id) => document.getElementById(id))
+      .filter((element): element is HTMLElement => Boolean(element))
+
+    if (!sections.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+        if (visible) setActiveSection(visible.target.id)
+      },
+      { rootMargin: "-35% 0px -55% 0px", threshold: [0, 0.2, 0.5, 0.8] },
+    )
+
+    sections.forEach((section) => observer.observe(section))
+
+    const onScroll = () => {
+      if (window.scrollY < window.innerHeight * 0.45) {
+        setActiveSection(null)
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+    onScroll()
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener("scroll", onScroll)
+    }
+  }, [pathname, sectionItems])
 
   const isActive = (match?: string) => {
     if (!match) return false
@@ -62,7 +109,14 @@ export function Navbar() {
           aria-label="التنقل الرئيسي"
         >
           {navigation.map((item) => {
-            const active = isActive(item.match)
+            const active =
+              pathname === "/"
+                ? item.sectionId
+                  ? activeSection === item.sectionId
+                  : item.match === "/"
+                    ? activeSection === null
+                    : false
+                : isActive(item.match)
             const inner = (
               <>
                 <span className="relative block h-[1.4em] overflow-hidden">

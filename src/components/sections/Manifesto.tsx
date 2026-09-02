@@ -38,7 +38,11 @@ function Mark({ children }: { children: ReactNode }) {
 
 export function Manifesto() {
   return (
-    <section dir="rtl" className="relative bg-canvas px-6 py-40 md:px-12">
+    <section
+      id="manifesto"
+      dir="rtl"
+      className="relative z-0 bg-canvas px-6 py-40 md:px-12"
+    >
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-20 flex items-center gap-5 font-meta text-[11px] uppercase tracking-[0.25em] text-navy/50">
           <span>Sharks / Creative Agency / 2026</span>

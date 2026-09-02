@@ -58,9 +58,10 @@ export function Hero({ ready }: { ready: boolean }) {
 
   return (
     <section
+      id="hero"
       dir="rtl"
       data-cursor-dim
-      className="relative min-h-[100svh] w-full overflow-hidden bg-canvas"
+      className="relative z-10 min-h-[100svh] w-full overflow-hidden bg-canvas"
     >
       <div className="absolute inset-0 z-20">
         <SharkGraphic ref={wrapperRef} tailRef={tailRef} bodyRef={bodyRef} />

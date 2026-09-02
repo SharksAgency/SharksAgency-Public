@@ -28,14 +28,20 @@ export function SharkButton({
     <Link
       href={href}
       data-cursor="cta"
+      aria-label={typeof children === "string" ? children : undefined}
       className={
         "group relative inline-flex items-center gap-3 overflow-hidden px-7 py-3.5 " +
         "text-[15px] font-medium tracking-tight transition-transform duration-500 " +
         "ease-brand hover:-translate-x-1 " +
-        (solid ? "bg-navy text-canvas" : "border border-navy text-navy ") +
+        (solid ? "bg-navy" : "border border-navy text-navy ") +
         className
       }
-      style={{ clipPath: clip, borderRadius: "2px" }}
+      style={{
+        clipPath: clip,
+        borderRadius: "2px",
+        // Keep the CTA legible even while the theme tokens are being bootstrapped.
+        color: solid ? "var(--color-canvas)" : "var(--color-navy)",
+      }}
     >
       {/* Azure fill travelling right → left */}
       <span

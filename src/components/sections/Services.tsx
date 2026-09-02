@@ -70,7 +70,7 @@ function Row({
             </span>
           </div>
         </div>
-        <div className="col-span-12 md:col-span-7 md:pr-4">
+        <div className="col-span-12 md:col-span-6 md:pr-4">
           <div className="overflow-hidden">
             <h3
               className="text-[9vw] font-bold leading-[1.05] tracking-tight text-navy transition-transform duration-[900ms] ease-brand md:text-[4vw]"

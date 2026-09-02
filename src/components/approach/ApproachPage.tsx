@@ -197,7 +197,7 @@ function ProcessSequence({ a }: { a: Approach }) {
 
     gsap.registerPlugin(ScrollTrigger)
     const context = gsap.context(() => {
-      ScrollTrigger.create({
+      const trigger = ScrollTrigger.create({
         trigger: wrapper,
         start: "top top",
         end: "bottom bottom",
@@ -216,6 +216,10 @@ function ProcessSequence({ a }: { a: Approach }) {
           }
         },
       })
+
+      // ScrollTrigger may be created after the initial Lenis frame. Sync the
+      // visible number immediately so a direct URL load never starts blank.
+      trigger.update()
     }, wrapper)
 
     return () => context.revert()
@@ -266,26 +270,26 @@ function ProcessSequence({ a }: { a: Approach }) {
           <div className="grid flex-1 grid-cols-12 items-center gap-8">
             <div className="col-span-12 md:col-span-7">
               <div
-                className="relative overflow-hidden leading-[0.8]"
+                className="relative flex overflow-hidden leading-none"
                 style={{
-                  height: "0.8em",
+                  height: "clamp(9rem, 30vw, 26rem)",
                   fontSize: "clamp(9rem, 30vw, 26rem)",
                 }}
               >
-                <div
-                  className="font-meta font-bold tabular-nums text-navy transition-transform duration-[700ms] ease-brand will-change-transform"
-                  style={{ transform: `translateY(${-active * 100}%)` }}
-                >
-                  {stages.map((s) => (
-                    <div
-                      key={s.no}
-                      dir="ltr"
-                      className="h-[0.8em] leading-[0.8]"
-                    >
-                      {s.no}
-                    </div>
-                  ))}
-                </div>
+                {stages.map((s, i) => (
+                  <span
+                    key={s.no}
+                    dir="ltr"
+                    aria-hidden={i !== active}
+                    className="absolute inset-0 flex items-center font-meta font-bold tabular-nums text-navy transition-all duration-[700ms] ease-brand will-change-transform"
+                    style={{
+                      opacity: i === active ? 1 : 0,
+                      transform: `translateY(${(i - active) * 22}px)`,
+                    }}
+                  >
+                    {s.no}
+                  </span>
+                ))}
               </div>
             </div>
             <div className="col-span-12 md:col-span-5">
