@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Next.js output
+.next*/
+out/
+
+# Tests and tooling
+coverage/
+*.tsbuildinfo
+
+# Environment files
+.env*
+!.env.example
+
+# Logs
+*.log
+*-debug.log*
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local agent and temporary state
+/.plugins/
+/.opencode-skills/
+/.git-public/
+.tmp-*
