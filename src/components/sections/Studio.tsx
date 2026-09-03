@@ -1,9 +1,15 @@
 "use client"
 import { useInView } from "@/hooks/useInView"
+import type { SiteContent } from "@/types/content"
 
-const TRACKS = ["Strategy", "Creative", "Marketing", "Digital"]
 
-export function Studio({ asPage = false }: { asPage?: boolean }) {
+export function Studio({
+  asPage = false,
+  content,
+}: {
+  asPage?: boolean
+  content: SiteContent["studio"]
+}) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.2 })
   const Heading = asPage ? "h1" : "h2"
 
@@ -17,35 +23,36 @@ export function Studio({ asPage = false }: { asPage?: boolean }) {
         <div className="grid grid-cols-12 gap-8">
           <div className="col-span-12 md:col-span-3">
             <span className="font-meta text-[11px] uppercase tracking-[0.3em] text-azure">
-              The Studio
+              {content.eyebrow}
             </span>
             <div className="mt-2 font-meta text-[11px] uppercase tracking-[0.3em] text-navy/50">
-              الاستوديو
+              {content.label}
             </div>
           </div>
           <div className="col-span-12 md:col-span-9">
             <Heading className="text-[8vw] font-bold leading-[1.08] tracking-tight text-navy md:text-[3.6vw]">
-              ننظر إلى المشروع كمنظومة{" "}
-              <span className="text-azure">متكاملة</span>.
+              {content.titleBefore}
+              <span className="text-azure">{content.titleHighlight}</span>
+              {content.titleAfter}
             </Heading>
             <p className="mt-8 max-w-[40ch] text-xl leading-relaxed text-navy/60 md:text-2xl">
-              نبحث، نفهم، نحدّد الاتجاه، ثم نبني ما يحتاجه المشروع فعلًا.
+              {content.description}
             </p>
           </div>
         </div>
         <div className="mt-28 grid grid-cols-12 items-end gap-8 border-t border-navy/12 pt-12">
           <div className="col-span-12 flex items-baseline gap-6 md:col-span-4">
             <span className="text-[22vw] font-bold leading-none tracking-tighter text-navy md:text-[9vw]">
-              04
+              {String(content.tracks.length).padStart(2, "0")}
             </span>
             <span className="max-w-[14ch] text-lg text-navy/60">
-              مسارات تعمل كمنظومة واحدة.
+              {content.trackSummary}
             </span>
           </div>
 
           <div className="col-span-12 md:col-span-8">
             <ul className="divide-y divide-navy/12">
-              {TRACKS.map((t, i) => (
+              {content.tracks.map((t, i) => (
                 <li
                   key={t}
                   className="group flex items-center justify-between py-5 transition-all duration-500"

@@ -4,21 +4,22 @@ import { Contact } from "@/components/sections/Contact"
 import { Philosophy } from "@/components/sections/Philosophy"
 import { Process } from "@/components/sections/Process"
 import { Studio } from "@/components/sections/Studio"
+import { getSiteContent } from "@/lib/content/queries"
+import { getRouteMetadata } from "@/lib/content/metadata"
 
-export const metadata: Metadata = {
-  title: "الاستوديو",
-  description:
-    "كيف يفكر استوديو Sharks Agency، وكيف تتحرك مساراته كمنظومة واحدة.",
-  alternates: { canonical: "/studio" },
+export async function generateMetadata(): Promise<Metadata> {
+  return getRouteMetadata("studio", "/studio")
 }
 
-export default function StudioPage() {
+export default async function StudioPage() {
+  const content = await getSiteContent()
+
   return (
     <>
-      <Studio asPage />
-      <Process />
-      <Philosophy />
-      <Contact />
+      <Studio asPage content={content.studio} />
+      <Process content={content.editorial.process} />
+      <Philosophy content={content.editorial.philosophy} />
+      <Contact content={content} />
     </>
   )
 }

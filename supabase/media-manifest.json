@@ -1,0 +1,89 @@
+{
+  "bucket": "website-media",
+  "objects": [
+    {
+      "path": "services/content-and-digital-experiences.jpg",
+      "size": 68018,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "ملمس أزرق تجريدي"
+    },
+    {
+      "path": "services/identity-and-creativity.jpg",
+      "size": 139862,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "مصمم يرسم أفكارًا بصرية على جهاز لوحي"
+    },
+    {
+      "path": "services/marketing-and-communication.jpg",
+      "size": 361392,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "مسارات ضوئية طويلة تعبّر عن الحركة"
+    },
+    {
+      "path": "services/strategy-and-growth.jpg",
+      "size": 133300,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "تكوينات معمارية خرسانية تجريدية"
+    },
+    {
+      "path": "scenarios/from-chaos-to-system.jpg",
+      "size": 187199,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "تكوين بصري تجريدي لسيناريو تحويل الحضور المشتت إلى نظام"
+    },
+    {
+      "path": "scenarios/from-idea-to-brand.jpg",
+      "size": 269924,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "تكوين بصري تجريدي لسيناريو بناء علامة من فكرة"
+    },
+    {
+      "path": "scenarios/from-product-to-experience.jpg",
+      "size": 372128,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "تكوين بصري تجريدي لسيناريو تحويل المنتج إلى تجربة"
+    },
+    {
+      "path": "blog/ai-and-creativity.jpg",
+      "size": 680352,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "غلاف تجريدي لمقال عن الذكاء الاصطناعي والإبداع"
+    },
+    {
+      "path": "blog/beautiful-vs-clear.jpg",
+      "size": 280159,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "غلاف تجريدي لمقال عن الجمال والوضوح"
+    },
+    {
+      "path": "blog/design-as-growth-tool.jpg",
+      "size": 196284,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "غلاف تجريدي لمقال عن التصميم كأداة نمو"
+    },
+    {
+      "path": "blog/identity-does-not-start-with-logo.jpg",
+      "size": 111811,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "غلاف تجريدي لمقال عن بناء الهوية"
+    },
+    {
+      "path": "blog/market-needs-direction.jpg",
+      "size": 274401,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "غلاف تجريدي لمقال عن وضوح اتجاه العلامة"
+    },
+    {
+      "path": "blog/same-websites.jpg",
+      "size": 228452,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "غلاف تجريدي لمقال عن تشابه مواقع الشركات"
+    },
+    {
+      "path": "blog/when-simplicity-is-bad.jpg",
+      "size": 395348,
+      "mime_type": "image/jpeg",
+      "alt_text_ar": "غلاف تجريدي لمقال عن البساطة في التصميم"
+    }
+  ]
+}

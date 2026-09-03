@@ -1,6 +1,6 @@
-import { socialLinks } from "@/data/socials"
+import type { SiteContent } from "@/types/content"
 
-export function Footer() {
+export function Footer({ content }: { content: SiteContent }) {
   const year = new Date().getFullYear()
 
   return (
@@ -12,15 +12,15 @@ export function Footer() {
       <div className="mx-auto max-w-[1600px]">
         <div className="flex flex-wrap items-end justify-between gap-8">
           <div className="font-meta text-[11px] uppercase leading-loose tracking-[0.25em] text-white/60">
-            Sharks Agency
+            {content.identity.name}
             <br />
-            Palestine — {year}
+            {content.identity.location} — {year}
           </div>
           <nav
             className="flex gap-8 font-meta text-[11px] uppercase tracking-[0.2em] text-white/60"
             aria-label="روابط Sharks Agency"
           >
-            {socialLinks
+            {content.socialLinks
               .filter((link) => link.label !== "Email")
               .map((link) => (
                 <a
@@ -45,7 +45,7 @@ export function Footer() {
         </div>
 
         <div className="mt-4 flex items-center justify-between font-meta text-[10px] uppercase tracking-[0.2em] text-white/30">
-          <span>© {year} — All rights reserved</span>
+          <span>© {year} — {content.editorial.copyright}</span>
           <span className="text-azure">●</span>
         </div>
       </div>

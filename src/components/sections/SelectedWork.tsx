@@ -10,14 +10,16 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import { scenarios, type Scenario } from "@/data/scenarios"
+import type { EditorialContent, Scenario } from "@/types/content"
 import { useInView } from "@/hooks/useInView"
 function ScenarioRow({
   s,
   index,
+  cta,
 }: {
   s: Scenario
   index: number
+  cta: string
 }) {
   const { ref, inView } = useInView<HTMLDivElement>(
     { threshold: 0, rootMargin: "-15% 0px -20% 0px" },
@@ -128,7 +130,7 @@ function ScenarioRow({
           data-cursor="cta"
           className="group mt-9 inline-flex items-center gap-3 border-b border-navy/20 pb-1 text-navy transition-colors duration-300 hover:border-azure hover:text-azure"
         >
-          <span className="text-lg">كيف نتعامل معها؟</span>
+          <span className="text-lg">{cta}</span>
           <span
             dir="ltr"
             className="inline-block transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -141,7 +143,15 @@ function ScenarioRow({
   )
 }
 
-export function SelectedWork() {
+export function SelectedWork({
+  scenarios,
+  content,
+}: {
+  scenarios: Scenario[]
+  content: EditorialContent["scenarios"]
+}) {
+  if (!scenarios.length) return null
+
   return (
     <section
       id="work"
@@ -154,19 +164,26 @@ export function SelectedWork() {
         >
           <div>
             <span className="font-meta text-[11px] uppercase tracking-[0.3em] text-azure">
-              Capabilities in Action — 03
+              {content.eyebrow} — {String(scenarios.length).padStart(2, "0")}
             </span>
             <h2 className="mt-3 text-[10vw] font-bold leading-none tracking-tight text-navy md:text-[4vw]">
-              كيف <span className="text-azure">نتحرك</span>؟
+              {content.before}
+              <span className="text-azure">{content.highlight}</span>
+              {content.after}
             </h2>
           </div>
           <p className="hidden max-w-[26ch] text-navy/55 md:block">
-            ليست أعمالًا سابقة، بل سيناريوهات تكشف طريقة تفكيرنا في التحديات.
+            {content.description}
           </p>
         </div>
         <div className="flex flex-col gap-24 md:gap-36">
           {scenarios.map((scenario, index) => (
-            <ScenarioRow key={scenario.number} s={scenario} index={index} />
+            <ScenarioRow
+              key={scenario.id}
+              s={scenario}
+              index={index}
+              cta={content.cta}
+            />
           ))}
         </div>
       </div>

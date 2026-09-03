@@ -5,16 +5,18 @@
 
 import Image from "next/image"
 
-import { services, type Service } from "@/data/services"
+import type { EditorialContent, Service } from "@/types/content"
 import { useInView } from "@/hooks/useInView"
 import { Tag } from "@/components/ui/Tag"
 
 function Row({
   service,
   index,
+  total,
 }: {
   service: Service
   index: number
+  total: number
 }) {
   const { ref, inView } = useInView<HTMLDivElement>(
     { threshold: 0, rootMargin: "-30% 0px -30% 0px" },
@@ -66,7 +68,8 @@ function Row({
               dir="ltr"
               className="pointer-events-none absolute right-3 top-3 font-meta text-[10px] uppercase tracking-[0.2em] text-white mix-blend-difference"
             >
-              0{index + 1} / 04
+              {String(index + 1).padStart(2, "0")} /{" "}
+              {String(total).padStart(2, "0")}
             </span>
           </div>
         </div>
@@ -128,7 +131,15 @@ function Row({
   )
 }
 
-export function Services() {
+export function Services({
+  services,
+  content,
+}: {
+  services: Service[]
+  content: EditorialContent["services"]
+}) {
+  if (!services.length) return null
+
   return (
     <section
       id="services"
@@ -139,24 +150,30 @@ export function Services() {
         <div className="mb-24 grid grid-cols-12 items-end gap-6">
           <div className="col-span-12 md:col-span-4">
             <span className="font-meta text-[11px] uppercase tracking-[0.3em] text-azure">
-              What We Do
+              {content.eyebrow}
             </span>
             <div className="mt-2 font-meta text-[11px] uppercase tracking-[0.3em] text-navy/50">
-              خدماتنا
+              {content.label}
             </div>
           </div>
           <div className="col-span-12 md:col-span-8">
             <h2 className="text-[8vw] font-bold leading-[1.05] tracking-tight text-navy md:text-[3.4vw]">
-              لا نقدّم قائمة خدمات.
+              {content.firstLine}
               <br />
-              نبني <span className="text-azure">المنظومة</span> التي يحتاجها
-              المشروع.
+              {content.before}
+              <span className="text-azure">{content.highlight}</span>
+              {content.after}
             </h2>
           </div>
         </div>
         <div className="border-b border-navy/12">
           {services.map((service, index) => (
-            <Row key={service.number} service={service} index={index} />
+            <Row
+              key={service.id}
+              service={service}
+              index={index}
+              total={services.length}
+            />
           ))}
         </div>
       </div>

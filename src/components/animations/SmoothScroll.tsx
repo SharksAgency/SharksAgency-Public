@@ -46,19 +46,71 @@ export function SmoothScroll() {
 
   useEffect(() => {
     const hash = window.location.hash
-    const frame = requestAnimationFrame(() => {
-      const target = hash ? document.getElementById(hash.slice(1)) : null
+    let frame = 0
+    let observer: MutationObserver | undefined
+
+    const cleanup = () => {
+      cancelAnimationFrame(frame)
+      observer?.disconnect()
+      window.removeEventListener("wheel", cleanup)
+      window.removeEventListener("touchstart", cleanup)
+      window.removeEventListener("keydown", cleanup)
+    }
+
+    const position = (target: HTMLElement | null) => {
+      if (!reducedMotion) ScrollTrigger.refresh()
+      lenisRef.current?.resize()
       if (lenisRef.current) {
-        lenisRef.current.scrollTo(target ?? 0, { immediate: true })
+        // Measure browser coordinates after recalculating pinned spacing.
+        const top = target
+          ? target.getBoundingClientRect().top + window.scrollY
+          : 0
+        const margin = target
+          ? parseFloat(getComputedStyle(target).scrollMarginTop) || 0
+          : 0
+        lenisRef.current.scrollTo(top - margin, { immediate: true })
       } else if (target) {
         target.scrollIntoView()
       } else {
         window.scrollTo(0, 0)
       }
-      if (!reducedMotion) ScrollTrigger.refresh()
+      cleanup()
+    }
+
+    const findTarget = () => {
+      const target = document.getElementById(hash.slice(1))
+      if (!target?.getClientRects().length) return
+      // Server HTML arrives before the homepage animation components hydrate.
+      // The existing intro signals readiness after those layout effects run.
+      if (
+        pathname === "/" &&
+        document.getElementById("hero")?.dataset.scrollReady !== "true"
+      ) return
+      observer?.disconnect()
+      // Streamed sections must mount and initialize their pins before measuring.
+      frame = requestAnimationFrame(() => position(target))
+    }
+
+    frame = requestAnimationFrame(() => {
+      if (!hash) {
+        position(null)
+        return
+      }
+
+      observer = new MutationObserver(findTarget)
+      observer.observe(document.getElementById("main-content") ?? document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["data-scroll-ready"],
+      })
+      window.addEventListener("wheel", cleanup, { passive: true })
+      window.addEventListener("touchstart", cleanup, { passive: true })
+      window.addEventListener("keydown", cleanup)
+      findTarget()
     })
 
-    return () => cancelAnimationFrame(frame)
+    return cleanup
   }, [pathname, reducedMotion])
 
   return null

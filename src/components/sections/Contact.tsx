@@ -1,6 +1,12 @@
-import { socialLinks } from "@/data/socials"
+import type { SiteContent } from "@/types/content"
 
-export function Contact({ asPage = false }: { asPage?: boolean }) {
+export function Contact({
+  asPage = false,
+  content,
+}: {
+  asPage?: boolean
+  content: Pick<SiteContent, "contact" | "socialLinks">
+}) {
   const Heading = asPage ? "h1" : "h2"
 
   return (
@@ -11,17 +17,21 @@ export function Contact({ asPage = false }: { asPage?: boolean }) {
     >
       <div className="mx-auto max-w-[1600px]">
         <Heading className="max-w-[20ch] text-[8vw] font-semibold leading-[1.1] tracking-tight text-navy md:text-[3.4vw]">
-          عندك شيء يستحق أن <span className="text-azure">يتحرك</span>؟
+          {content.contact.headingBefore}
+          <span className="text-azure">
+            {content.contact.headingHighlight}
+          </span>
+          {content.contact.headingAfter}
         </Heading>
 
         {/* Massive interactive word */}
         <a
-          href="mailto:hello@sharks.agency"
+          href={`mailto:${content.contact.email}`}
           data-cursor="cta"
           className="group relative mt-8 inline-block"
         >
           <span className="block origin-right text-[26vw] font-bold leading-none tracking-tighter text-navy transition-all duration-500 ease-brand group-hover:[transform:scaleX(1.06)] group-hover:text-azure md:text-[18vw]">
-            لنتحدث
+            {content.contact.ctaLabel}
             <span className="inline-block transition-transform duration-500 ease-brand group-hover:translate-x-6">
               ↗
             </span>
@@ -36,7 +46,7 @@ export function Contact({ asPage = false }: { asPage?: boolean }) {
 
         {/* Contact info */}
         <div className="mt-24 grid grid-cols-2 gap-8 border-t border-navy/12 pt-12 md:grid-cols-4">
-          {socialLinks.map((link) => (
+          {content.socialLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}

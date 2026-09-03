@@ -7,48 +7,53 @@ import { CustomCursor } from "@/components/interactions/CustomCursor"
 import { SmoothScroll } from "@/components/animations/SmoothScroll"
 import { Footer } from "@/components/layout/Footer"
 import { Navbar } from "@/components/layout/Navbar"
+import { getSiteContent } from "@/lib/content/queries"
 
 const siteUrl = new URL(
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://sharks.agency",
 )
 
-export const metadata: Metadata = {
-  metadataBase: siteUrl,
-  applicationName: "SharksAgency",
-  title: {
-    default: "Sharks Agency — نصنع الاتجاه",
-    template: "%s | Sharks Agency",
-  },
-  description:
-    "وكالة إبداعية عربية تبني الاستراتيجية والهوية والتسويق والتجارب الرقمية كمنظومة واحدة.",
-  keywords: [
-    "Sharks Agency",
-    "وكالة إبداعية",
-    "استراتيجية العلامة",
-    "الهوية البصرية",
-    "التجارب الرقمية",
-  ],
-  authors: [{ name: "Sharks Agency" }],
-  creator: "Sharks Agency",
-  publisher: "Sharks Agency",
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "ar_PS",
-    url: "/",
-    siteName: "Sharks Agency",
-    title: "Sharks Agency — نصنع الاتجاه",
-    description: "استراتيجية، هوية، تسويق وتجارب رقمية تتحرك في اتجاه واحد.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sharks Agency — نصنع الاتجاه",
-    description: "استراتيجية، هوية، تسويق وتجارب رقمية تتحرك في اتجاه واحد.",
-  },
-  icons: {
-    icon: "/brand/sharks-agency-mark.png",
-    apple: "/brand/sharks-agency-mark.png",
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getSiteContent()
+  return {
+    metadataBase: siteUrl,
+    applicationName: "SharksAgency",
+    title: {
+      default: content.seo.title,
+      template: "%s | Sharks Agency",
+    },
+    description: content.seo.description,
+    keywords: [
+      "Sharks Agency",
+      "وكالة إبداعية",
+      "استراتيجية العلامة",
+      "الهوية البصرية",
+      "التجارب الرقمية",
+    ],
+    authors: [{ name: "Sharks Agency" }],
+    creator: "Sharks Agency",
+    publisher: "Sharks Agency",
+    alternates: { canonical: "/" },
+    openGraph: {
+      type: "website",
+      locale: "ar_PS",
+      url: "/",
+      siteName: "Sharks Agency",
+      title: content.seo.ogTitle,
+      description: content.seo.ogDescription,
+      ...(content.seo.ogImage ? { images: [content.seo.ogImage] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: content.seo.ogTitle,
+      description: content.seo.ogDescription,
+      ...(content.seo.ogImage ? { images: [content.seo.ogImage] } : {}),
+    },
+    icons: {
+      icon: "/brand/sharks-agency-mark.png",
+      apple: "/brand/sharks-agency-mark.png",
+    },
+  }
 }
 
 export const viewport: Viewport = {
@@ -69,9 +74,11 @@ const themeBootScript = `
   } catch {}
 `
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const content = await getSiteContent()
+
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
@@ -83,9 +90,12 @@ export default function RootLayout({
         </a>
         <SmoothScroll />
         <CustomCursor />
-        <Navbar />
+        <Navbar
+          navigation={content.editorial.navigation}
+          ctaLabel={content.contact.ctaLabel}
+        />
         <main id="main-content">{children}</main>
-        <Footer />
+        <Footer content={content} />
       </body>
     </html>
   )

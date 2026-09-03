@@ -5,10 +5,11 @@ import { useCallback, useEffect, useState } from "react"
 
 import { Loader } from "@/components/animations/Loader"
 import { Hero } from "@/components/sections/Hero"
+import type { SiteContent } from "@/types/content"
 
 const SESSION_KEY = "sharks-intro-seen"
 
-export function HomeIntro() {
+export function HomeIntro({ content }: { content: SiteContent["hero"] }) {
   const [ready, setReady] = useState(false)
   const [showLoader, setShowLoader] = useState(true)
 
@@ -35,7 +36,7 @@ export function HomeIntro() {
   return (
     <>
       {showLoader && <Loader onDone={finishIntro} />}
-      <Hero ready={ready} />
+      <Hero ready={ready} content={content} />
     </>
   )
 }

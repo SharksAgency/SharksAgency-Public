@@ -18,7 +18,15 @@ import { useSharkPhysics, type SharkMotionMode } from "@/hooks/useSharkPhysics"
 import { SharkGraphic } from "@/components/sharks/SharkGraphic"
 import { DirectionLine } from "@/components/ui/DirectionLine"
 import { SharkButton } from "@/components/ui/SharkButton"
-export function Hero({ ready }: { ready: boolean }) {
+import type { SiteContent } from "@/types/content"
+
+export function Hero({
+  ready,
+  content,
+}: {
+  ready: boolean
+  content: SiteContent["hero"]
+}) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const tailRef = useRef<SVGGElement>(null)
   const bodyRef = useRef<SVGGElement>(null)
@@ -59,6 +67,7 @@ export function Hero({ ready }: { ready: boolean }) {
   return (
     <section
       id="hero"
+      data-scroll-ready={ready ? "true" : undefined}
       dir="rtl"
       data-cursor-dim
       className="relative z-10 min-h-[100svh] w-full overflow-hidden bg-canvas"
@@ -80,30 +89,30 @@ export function Hero({ ready }: { ready: boolean }) {
               opacity: 1 - progress * 0.8,
             }}
           >
-            Sharks Agency
+            {content.metaTop}
             <br />
-            <span className="text-azure">●</span> Palestine
+            <span className="text-azure">●</span> {content.metaLocation}
           </div>
 
           <div
             className="absolute bottom-28 left-6 hidden font-meta text-[11px] uppercase tracking-[0.2em] text-navy/60 md:block md:left-12"
             style={{ opacity: 1 - progress }}
           >
-            Creative / Strategy / Digital
+            {content.metaServices}
           </div>
 
           <div
             className="absolute bottom-10 right-6 font-meta text-[11px] uppercase tracking-[0.35em] text-navy/60 md:right-12"
             style={{ opacity: 1 - progress }}
           >
-            © 2026
+            © {new Date().getFullYear()}
           </div>
           <div className="absolute left-6 top-1/2 hidden -translate-y-1/2 md:block">
             <span
               className="font-meta text-[10px] uppercase tracking-[0.4em] text-navy/40"
               style={{ writingMode: "vertical-rl" }}
             >
-              Selected — Creative Direction
+              {content.directionLabel}
             </span>
           </div>
         </div>
@@ -122,7 +131,9 @@ export function Hero({ ready }: { ready: boolean }) {
               className={"block clip-reveal " + (revealed ? "is-in" : "")}
               style={{ transform: `translateY(${progress * -80}px)` }}
             >
-              لا نلاحق <span className="text-azure">الاتجاه</span>.
+              {content.lineOneBefore}
+              <span className="text-azure">{content.highlight}</span>
+              {content.lineOneAfter}
             </span>
             <span
               className={"block clip-reveal " + (revealed ? "is-in" : "")}
@@ -131,7 +142,7 @@ export function Hero({ ready }: { ready: boolean }) {
                 transitionDelay: "0.12s",
               }}
             >
-              نصنعه.
+              {content.lineTwo}
             </span>
           </h1>
 
@@ -139,7 +150,7 @@ export function Hero({ ready }: { ready: boolean }) {
             className="mt-10 flex items-center gap-6"
             style={{ opacity: 1 - progress }}
           >
-            <SharkButton href="/contact">لنتحدث</SharkButton>
+            <SharkButton href="/contact">{content.ctaLabel}</SharkButton>
             <div className="hidden w-40 sm:block">
               <DirectionLine delay={0.9} />
             </div>
@@ -156,7 +167,7 @@ export function Hero({ ready }: { ready: boolean }) {
           style={{ opacity: 1 - progress * 2 }}
         >
           <span className="font-meta text-[10px] uppercase tracking-[0.3em] text-navy/50">
-            Scroll
+            {content.scrollLabel}
           </span>
           <span className="h-8 w-px animate-pulse bg-navy/40" />
         </div>

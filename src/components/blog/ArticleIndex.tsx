@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import type { ArticlePreview } from "@/data/blog"
+import type { ArticlePreview } from "@/types/content"
 export function ArticleIndex({ articles }: { articles: ArticlePreview[] }) {
   const previewRef = useRef<HTMLDivElement>(null)
   const [hovered, setHovered] = useState<string | null>(null)

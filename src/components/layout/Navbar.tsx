@@ -9,17 +9,22 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import { navigation } from "@/data/navigation"
+import type { EditorialContent } from "@/types/content"
 import { ThemeToggle } from "@/components/navigation/ThemeToggle"
 import { SharkButton } from "@/components/ui/SharkButton"
-export function Navbar() {
+export function Navbar({
+  navigation,
+  ctaLabel,
+}: {
+  navigation: EditorialContent["navigation"]
+  ctaLabel: string
+}) {
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const pathname = usePathname() ?? ""
-
   const sectionItems = useMemo(
     () => navigation.filter((item) => item.sectionId),
-    [],
+    [navigation],
   )
 
   useEffect(() => {
@@ -36,14 +41,6 @@ export function Navbar() {
       return
     }
 
-    const sections = sectionItems
-      .map((item) => item.sectionId)
-      .filter((id): id is string => Boolean(id))
-      .map((id) => document.getElementById(id))
-      .filter((element): element is HTMLElement => Boolean(element))
-
-    if (!sections.length) return
-
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -54,7 +51,25 @@ export function Navbar() {
       { rootMargin: "-35% 0px -55% 0px", threshold: [0, 0.2, 0.5, 0.8] },
     )
 
-    sections.forEach((section) => observer.observe(section))
+    const observedSections = new Set<HTMLElement>()
+    const observeSections = () => {
+      for (const item of sectionItems) {
+        const section = item.sectionId
+          ? document.getElementById(item.sectionId)
+          : null
+        if (section && !observedSections.has(section)) {
+          observedSections.add(section)
+          observer.observe(section)
+        }
+      }
+    }
+    // The layout can hydrate before streamed homepage content arrives.
+    const contentObserver = new MutationObserver(observeSections)
+    contentObserver.observe(
+      document.getElementById("main-content") ?? document.body,
+      { childList: true, subtree: true },
+    )
+    observeSections()
 
     const onScroll = () => {
       if (window.scrollY < window.innerHeight * 0.45) {
@@ -66,6 +81,7 @@ export function Navbar() {
 
     return () => {
       observer.disconnect()
+      contentObserver.disconnect()
       window.removeEventListener("scroll", onScroll)
     }
   }, [pathname, sectionItems])
@@ -95,7 +111,7 @@ export function Navbar() {
             src="/brand/sharks-agency-mark.png"
             alt=""
             width={32}
-            height={34}
+            height={32}
             className="h-8 w-8 object-contain"
             priority
           />
@@ -156,7 +172,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-5 md:flex">
           <ThemeToggle />
-          <SharkButton href="/contact">لنتحدث</SharkButton>
+          <SharkButton href="/contact">{ctaLabel}</SharkButton>
         </div>
         <div className="flex items-center gap-4 md:hidden">
           <ThemeToggle />
@@ -165,13 +181,13 @@ export function Navbar() {
             data-cursor="link"
             className="font-meta text-xs font-medium uppercase tracking-widest text-navy"
           >
-            المدونة
+            {navigation.find((item) => item.href === "/blog")?.label}
           </Link>
           <Link
             href="/contact"
             className="font-meta text-xs font-medium uppercase tracking-widest text-navy"
           >
-            لنتحدث ↗
+            {ctaLabel} ↗
           </Link>
         </div>
       </div>

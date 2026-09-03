@@ -2,13 +2,13 @@
 
 import Image from "next/image"
 
-import type { Block } from "@/data/blog"
+import type { ArticleBlock } from "@/types/content"
 import { useInView } from "@/hooks/useInView"
 
 export function ArticleImage({
   block,
 }: {
-  block: Extract<Block, { type: "image" }>
+  block: Extract<ArticleBlock, { type: "image" }>
 }) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.15 })
 
@@ -23,7 +23,7 @@ export function ArticleImage({
       >
         <Image
           src={block.src}
-          alt={block.caption ?? ""}
+          alt={block.alt ?? block.caption ?? ""}
           fill
           sizes="(min-width: 768px) 70vw, 100vw"
           className="object-cover transition-transform duration-[1200ms] ease-out"

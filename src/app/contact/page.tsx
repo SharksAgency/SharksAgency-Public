@@ -1,13 +1,14 @@
 import type { Metadata } from "next"
 
 import { Contact } from "@/components/sections/Contact"
+import { getSiteContent } from "@/lib/content/queries"
+import { getRouteMetadata } from "@/lib/content/metadata"
 
-export const metadata: Metadata = {
-  title: "تواصل معنا",
-  description: "ابدأ حديثًا مع Sharks Agency حول مشروعك واتجاهه القادم.",
-  alternates: { canonical: "/contact" },
+export async function generateMetadata(): Promise<Metadata> {
+  return getRouteMetadata("contact", "/contact")
 }
 
-export default function ContactPage() {
-  return <Contact asPage />
+export default async function ContactPage() {
+  const content = await getSiteContent()
+  return <Contact asPage content={content} />
 }

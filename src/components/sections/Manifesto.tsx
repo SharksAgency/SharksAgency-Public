@@ -12,12 +12,9 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 import { useReducedMotion } from "@/hooks/useReducedMotion"
+import type { SiteContent } from "@/types/content"
 
-function Line({
-  children,
-}: {
-  children: ReactNode
-}) {
+function Line({ children }: { children: ReactNode }) {
   return (
     <div className="overflow-hidden">
       <div
@@ -35,7 +32,7 @@ function Mark({ children }: { children: ReactNode }) {
   return <span className="mark">{children}</span>
 }
 
-export function Manifesto() {
+export function Manifesto({ content }: { content: SiteContent["manifesto"] }) {
   const sectionRef = useRef<HTMLElement>(null)
   const reducedMotion = useReducedMotion()
 
@@ -72,11 +69,7 @@ export function Manifesto() {
         const mark = line.querySelector<HTMLElement>(".mark")
         const at = index * 1.05
         timeline.addLabel(`manifesto-${index}`, at)
-        timeline.to(
-          line,
-          { y: "0%", opacity: 1, duration: 0.85 },
-          at,
-        )
+        timeline.to(line, { y: "0%", opacity: 1, duration: 0.85 }, at)
         if (mark) {
           timeline.to(
             mark,
@@ -88,7 +81,7 @@ export function Manifesto() {
     }, section)
 
     return () => context.revert()
-  }, [reducedMotion])
+  }, [reducedMotion, content.lines])
 
   return (
     <section
@@ -99,25 +92,30 @@ export function Manifesto() {
     >
       <div className="mx-auto w-full max-w-[1600px]">
         <div className="mb-20 flex items-center gap-5 font-meta text-[11px] uppercase tracking-[0.25em] text-navy/50">
-          <span>Sharks / Creative Agency / 2026</span>
+          <span>{content.eyebrow}</span>
           <div className="h-px flex-1 bg-navy/15" />
         </div>
 
         <div className="space-y-2 text-[8vw] font-semibold leading-[1.12] tracking-tight text-navy md:space-y-3 md:text-[3.6vw]">
-          <Line>
-            نحن لا نضيف ضوضاء جديدة إلى السوق.
-          </Line>
-          <Line>
-            <span className="text-navy/40">نفهم ما يحدث،</span>
-          </Line>
-          <Line>
-            <span className="text-navy/40">نحدّد أين تكمن </span>
-            <Mark>الفرصة</Mark>
-            <span className="text-navy/40">،</span>
-          </Line>
-          <Line>
-            ثم نبني <Mark>الاتجاه</Mark> الذي يستحق أن تتحرك نحوه العلامة.
-          </Line>
+          {content.lines.map((segments, lineIndex) => (
+            <Line key={lineIndex}>
+              {segments.map((segment, segmentIndex) => {
+                if (segment.highlight) {
+                  return <Mark key={segmentIndex}>{segment.text}</Mark>
+                }
+                return (
+                  <span
+                    key={segmentIndex}
+                    className={
+                      segment.tone === "muted" ? "text-navy/40" : undefined
+                    }
+                  >
+                    {segment.text}
+                  </span>
+                )
+              })}
+            </Line>
+          ))}
         </div>
       </div>
     </section>

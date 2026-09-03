@@ -10,7 +10,12 @@ import { useEffect, useRef, useState } from "react"
 
 import { useInView } from "@/hooks/useInView"
 import { SharkGraphic } from "@/components/sharks/SharkGraphic"
-export function Philosophy() {
+import type { EditorialContent } from "@/types/content"
+export function Philosophy({
+  content,
+}: {
+  content: EditorialContent["philosophy"]
+}) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.4 })
   const tailRef = useRef<SVGGElement>(null)
   const bodyRef = useRef<SVGGElement>(null)
@@ -45,7 +50,7 @@ export function Philosophy() {
     >
       <div ref={ref} className="mx-auto w-full max-w-[1600px]">
         <span className="font-meta text-[11px] uppercase tracking-[0.4em] text-navy/50">
-          Sharks Move Forward.
+          {content.eyebrow}
         </span>
 
         <div className="relative mt-10">
@@ -73,9 +78,11 @@ export function Philosophy() {
               transformOrigin: "right center",
             }}
           >
-            لا ننتظر الموجة.
+            {content.firstLine}
             <br />
-            نحدّد <span className="text-azure">اتجاهها</span>.
+            {content.before}
+            <span className="text-azure">{content.highlight}</span>
+            {content.after}
           </h2>
         </div>
       </div>

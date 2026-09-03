@@ -10,7 +10,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import type { ArticlePreview } from "@/data/blog"
+import type { ArticlePreview } from "@/types/content"
 import { useInView } from "@/hooks/useInView"
 export function FeaturedArticle({ article }: { article: ArticlePreview }) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.2 })

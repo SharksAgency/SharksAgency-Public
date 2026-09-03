@@ -11,16 +11,14 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 import { useReducedMotion } from "@/hooks/useReducedMotion"
+import type { EditorialContent } from "@/types/content"
 
-const WORDS = [
-  { text: "استراتيجية", speed: -420 },
-  { text: "هوية", speed: 300 },
-  { text: "إبداع", speed: -140 },
-  { text: "محتوى", speed: 360 },
-  { text: "تسويق", speed: -300 },
-  { text: "تجارب رقمية", speed: 180 },
-]
-export function KineticType() {
+const SPEEDS = [-420, 300, -140, 360, -300, 180]
+export function KineticType({
+  content,
+}: {
+  content: EditorialContent["kinetic"]
+}) {
   const sectionRef = useRef<HTMLElement>(null)
   const lineRefs = useRef<Array<HTMLDivElement | null>>([])
   const activeRef = useRef(0)
@@ -33,19 +31,23 @@ export function KineticType() {
 
     gsap.registerPlugin(ScrollTrigger)
     const context = gsap.context(() => {
-      lineRefs.current.forEach((line, index) => {
+      lineRefs.current.slice(0, content.words.length).forEach((line, index) => {
         if (!line) return
-        const speed = WORDS[index].speed
-        gsap.fromTo(line, { x: -speed / 2 }, {
-          x: speed / 2,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
+        const speed = SPEEDS[index % SPEEDS.length]
+        gsap.fromTo(
+          line,
+          { x: -speed / 2 },
+          {
+            x: speed / 2,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
           },
-        })
+        )
       })
 
       ScrollTrigger.create({
@@ -54,8 +56,8 @@ export function KineticType() {
         end: "bottom top",
         onUpdate: ({ progress }) => {
           const next = Math.min(
-            WORDS.length - 1,
-            Math.floor(progress * WORDS.length),
+            content.words.length - 1,
+            Math.floor(progress * content.words.length),
           )
           if (next !== activeRef.current) {
             activeRef.current = next
@@ -66,7 +68,7 @@ export function KineticType() {
     }, section)
 
     return () => context.revert()
-  }, [reducedMotion])
+  }, [reducedMotion, content.words])
 
   return (
     <section
@@ -76,14 +78,14 @@ export function KineticType() {
     >
       <div className="mb-16 px-6 md:px-12">
         <span className="font-meta text-[11px] uppercase tracking-[0.3em] text-navy/50">
-          Capabilities — In Motion
+          {content.eyebrow}
         </span>
       </div>
 
       <div className="flex flex-col gap-1 md:gap-2">
-        {WORDS.map((w, i) => (
+        {content.words.map((word, i) => (
           <div
-            key={w.text}
+            key={word}
             ref={(element) => {
               lineRefs.current[i] = element
             }}
@@ -95,7 +97,7 @@ export function KineticType() {
                 (i === active ? "text-azure" : "text-navy")
               }
             >
-              {w.text}
+              {word}
             </span>
           </div>
         ))}

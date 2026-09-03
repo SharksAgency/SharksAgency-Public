@@ -4,9 +4,9 @@ import { ArticleCover, ArticleImage } from "@/components/blog/ArticleMedia"
 import { CopyArticleLink } from "@/components/blog/CopyArticleLink"
 import { NextArticle } from "@/components/blog/NextArticle"
 import { ReadingProgress } from "@/components/blog/ReadingProgress"
-import type { Article, Block } from "@/data/blog"
+import type { Article, ArticleBlock } from "@/types/content"
 
-function ArticleBlock({ block }: { block: Block }) {
+function ArticleBlock({ block }: { block: ArticleBlock }) {
   switch (block.type) {
     case "p":
       return (
@@ -116,7 +116,7 @@ export function BlogArticle({
         </div>
       </header>
 
-      <ArticleCover src={article.coverImage} alt={article.title} />
+      <ArticleCover src={article.coverImage} alt={article.coverAlt || article.title} />
 
       <div className="px-6 py-20 md:px-12 md:py-28">
         <div className="mx-auto grid max-w-[1400px] grid-cols-12 gap-8">

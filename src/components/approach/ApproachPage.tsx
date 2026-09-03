@@ -4,7 +4,7 @@ import Link from "next/link"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
-import type { Approach } from "@/data/approaches"
+import type { Approach } from "@/types/content"
 import { useInView } from "@/hooks/useInView"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 

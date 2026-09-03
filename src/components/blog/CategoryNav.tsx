@@ -7,13 +7,15 @@
 
 import { useLayoutEffect, useRef, useState } from "react"
 
-import { CATEGORIES, type CategoryKey } from "@/data/blog"
+import type { BlogCategory } from "@/types/content"
 export function CategoryNav({
   active,
   onChange,
+  categories,
 }: {
-  active: CategoryKey
-  onChange: (k: CategoryKey) => void
+  active: string
+  onChange: (key: string) => void
+  categories: BlogCategory[]
 }) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const [line, setLine] = useState({ width: 0, right: 0 })
@@ -43,17 +45,17 @@ export function CategoryNav({
       className="relative flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-navy/12 pb-4"
       ref={wrapRef}
     >
-      {CATEGORIES.map((c, i) => (
-        <div key={c.key} className="flex items-center gap-x-6">
+      {[{ slug: "all", label: "الكل", labelEn: "All" }, ...categories].map((c, i) => (
+        <div key={c.slug} className="flex items-center gap-x-6">
           {i > 0 && <span className="select-none text-navy/15">/</span>}
           <button
             type="button"
-            data-cat={c.key}
+            data-cat={c.slug}
             data-cursor="link"
-            onClick={() => onChange(c.key)}
+            onClick={() => onChange(c.slug)}
             className={
               "py-1 text-lg transition-colors duration-300 md:text-xl " +
-              (active === c.key ? "text-azure" : "text-navy/55 hover:text-navy")
+              (active === c.slug ? "text-azure" : "text-navy/55 hover:text-navy")
             }
           >
             {c.label}
