@@ -69,7 +69,7 @@ export const viewport: Viewport = {
 const themeBootScript = `
   try {
     const stored = localStorage.getItem("sharks-theme");
-    const dark = stored === "dark" || (!stored && matchMedia("(prefers-color-scheme: dark)").matches);
+    const dark = stored === "dark";
     document.documentElement.classList.toggle("dark", dark);
   } catch {}
 `
